@@ -1,0 +1,307 @@
+/* Base styles (already responsive with rem units) */
+body {
+    margin: 0;
+    background-image: url('../assets/Shadows.jpeg');
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+}
+
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background: transparent;
+    border-radius: 6.5rem 1rem 1rem 1rem;
+    backdrop-filter: blur(0.625rem);
+    box-shadow: 0 0.5rem 1.875rem rgba(0, 0, 0, 0.4);
+}
+
+.login-box,
+.signin-box {
+    color: white;
+    padding: 3.125rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.signin-box {
+    flex: 50%;
+    border-radius: 1rem 6.5rem 1rem 1rem;
+
+}
+
+.login-box {
+    flex: 50%;
+    padding: 5rem 4rem;
+}
+
+.register-link {
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+    background: transparent;
+    border: none;
+}
+
+.sign-up {
+    flex: 50%;
+    text-align: center;
+    padding: 0rem 1rem;
+}
+
+.sign-up p {
+    font-size: 1.25rem;
+    color: rgb(57, 55, 55);
+    padding: 0rem 1rem;
+}
+
+
+.login-title {
+    color: rgb(45, 45, 45);
+    font-size: 2rem;
+    margin-bottom: 1.875rem;
+}
+
+.login-input {
+    width: 100%;
+    margin-bottom: 1.25rem;
+    padding: 0.75rem 1.25rem;
+    border: 0.125rem solid cornsilk;
+    border-radius: 1.875rem;
+    font-size: 1rem;
+    outline: none;
+    background: transparent;
+    color: black;
+    font-style: oblique;
+    font-weight: 100;
+}
+
+.login-input::placeholder {
+    color: rgb(244, 242, 242);
+
+}
+
+.login-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 0.875rem;
+    color: white;
+    margin-bottom: 1.5625rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.3125rem;
+}
+
+.forgot-password {
+    cursor: pointer;
+    text-decoration: underline;
+    background: transparent;
+    border: none;
+    color: rgb(205, 202, 202);
+
+}
+
+.login-button,
+.signup-button {
+    width: 100%;
+    padding: 0.9375rem;
+    background-color: #0c0a0a;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 2.5rem;
+    cursor: pointer;
+    margin-bottom: 1.5625rem;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover,
+.signup-button:hover {
+    background-color: #3a3737;
+    color: cornsilk;
+}
+
+.register-text {
+    color: white;
+}
+
+
+/* Flip card container */
+.flip-card {
+    background: transparent;
+    width: 45rem;
+    height: 31.25rem;
+    perspective: 62.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Inner wrapper for flipping */
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+/* Flipped state */
+.flip-card.flipped .flip-card-inner,
+.flip-card-inner.flipped {
+    transform: rotateY(180deg);
+}
+
+/* Front and back faces */
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Back face rotated */
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+/* ------------------- Responsive Adjustments ------------------- */
+
+/* Tablets (≤ 768px) */
+@media (max-width: 768px) {
+    body {
+        display: block;
+        align-content: center;
+        /* height: max-content; */
+        /* background: linear-gradient(135deg, #1f1f1f 0%, #0a0a0a 100%); */
+
+    }
+    .login-wrapper{
+        width: 90%;
+    }
+
+    .login-box,
+    .signin-box {
+        /* margin: 2rem 1.15rem; */
+        width: 80%;
+        /* height: 118.35; */
+        padding: 0.9rem;
+        border-radius: 1.5rem;
+        justify-content: center;
+    }
+
+    .signin-box {
+        width: 90vw;
+    }
+
+    .login-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .login-button {
+        font-size: 1rem;
+        padding: 0.75rem;
+    }
+
+    .login-input {
+        width: 90%;
+    }
+
+    .flip-card {
+        width: 100%;
+        height: max-content;
+        /* min-height: 25rem; */
+    }
+}
+
+/* Mobile (≤ 480px) */
+@media (max-width: 480px) {
+    body {
+        /* margin: 2rem 1rem; */
+        display: block;
+        height: 100vh;
+        align-content: center;
+        /* background: linear-gradient(135deg, #1f1f1f 0%, #0a0a0a 100%); */
+    }
+
+    .login-wrapper {
+        display: block;
+        border-radius: 1.5rem;
+        width: 90vw;
+    }
+
+    .login-box,
+    .signin-box {
+        /* margin: 2rem 1.15rem; */
+        width: 85%;
+        height: max-content;
+        padding: 1.5rem;
+        border-bottom: 2px solid #3a3737;
+    }
+
+    .register-text {
+        font-size: medium;
+    }
+
+    .sign-up p {
+        font-size: medium;
+    }
+
+    .signup-button {
+        font-size: medium;
+    }
+
+    .signin-box {
+        width: 79vw;
+        margin: 0;
+        border-radius: 1.5rem;
+    }
+
+    .login-title {
+        font-size: 1.25rem;
+    }
+
+    .login-input {
+        font-size: 0.875rem;
+        padding: 0.625rem 1rem;
+    }
+
+    .login-options {
+        font-size: 0.75rem;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .login-button {
+        font-size: 1rem;
+        padding: 0.75rem;
+    }
+
+    .flip-card {
+        width: 100%;
+        height: auto;
+        min-height: 22rem;
+
+    }
+}

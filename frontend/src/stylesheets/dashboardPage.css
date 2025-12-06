@@ -1,0 +1,58 @@
+.dashboard {
+  height: 100vh;
+}
+
+.addRoom-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(30, 30, 40, 0.7);
+  transition: opacity 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addRoom-content {
+  display: flex;
+  background-image: linear-gradient(315deg, #212335 0%, #232239 100%);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 7px 10px rgba(0, 0, 0, 0.2);
+  max-width: fit-content;
+  justify-content: center;
+  align-items: center;
+}
+
+.chatbox-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: white;
+}
+
+.chatbox-placeholder button {
+  padding: 0.65rem 1.6rem;
+  background-color: #24243b;
+  font-size: medium;
+  margin-top: 1.5rem;
+}
+
+.chatbox-placeholder h1,
+h2 {
+  margin: 0.5rem;
+}
+
+.message-icon {
+  width: 14rem;
+  height: 10rem;
+}
+
+#sidebar {
+  background-color: #141522;
+  border-right: 1.5px solid #313050;
+}

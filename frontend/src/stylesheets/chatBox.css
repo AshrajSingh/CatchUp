@@ -1,0 +1,143 @@
+.chatbox-container {
+  background: #141522;
+  height: 100%;
+  border: 1.5px solid #313050;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatbox-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat-header {
+  color: white;
+  box-shadow: 0 7px 10px rgba(0, 0, 0, 0.351);
+  border-bottom: 2px solid #2c2c48;
+  background-color: #141522;
+  padding: 0.85em;
+  flex-shrink: 0; /* Don't shrink header */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contact-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contact-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.contact-profile h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.info-icon {
+  background: #363558;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.info-icon:hover {
+  background: #454368;
+}
+
+/* Messages Container - THIS IS THE KEY FIX */
+.messages-container {
+  flex: 1; /* Take all available space */
+  overflow-y: auto; /* Enable scrolling */
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* background: #1a1e2d; */
+}
+
+/* Custom scrollbar styling */
+.messages-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: #1a1e2d;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background: #363558;
+  border-radius: 4px;
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+  background: #454368;
+}
+
+.chat-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #363558;
+  border-top: 1px solid #2c2c48;
+  flex-shrink: 0; /* Don't shrink input box */
+  padding: 8px;
+}
+
+.chat-input input {
+  width: 100%;
+  padding: 1rem 0.5rem;
+  font-size: medium;
+  background: #363558;
+  border: none;
+  margin: 0 0 0 0.1rem;
+  color: white;
+  font-weight: 100;
+}
+
+.chat-input input:focus {
+  outline: none;
+}
+
+.chat-input button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 0.54rem;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.chat-input button:hover {
+  transform: scale(1.1);
+}
+
+.chat-input img {
+  width: 1.3rem;
+  height: 1.3rem;
+  background: transparent;
+}
+
+/* No chat selected state */
+.no-chat-selected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 18px;
+}

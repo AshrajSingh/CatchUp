@@ -1,0 +1,52 @@
+.addRoom {
+    height: 30vh;
+    width: 20vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+}
+
+.addRoom h2 {
+    color: white;
+    font-size: medium;
+    margin: 0 0 2rem 0;
+}
+
+.addRoom input {
+    width: 100%;
+    padding: 0.7rem;
+    margin-bottom: 2.5rem;
+    border: 1px solid #49496d;
+    border-radius: 0.25rem;
+    background-color: #313050;
+    color: white;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 3px rgb(0, 0, 0);
+
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 1rem;
+}
+
+.add,
+.close {
+    padding: 0.5rem 1rem;
+    border: 1px solid #49496d;
+    border-radius: 0.35rem;
+    background-color: #313050;
+    color: white;
+    box-shadow: 0 2px 3px rgb(0, 0, 0);
+    transition: background-color 0.4s;
+    cursor: pointer;
+}
+
+.add:hover,
+.close:hover {
+    background-color: #09117a;
+}

@@ -1,0 +1,57 @@
+.sidebar {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    z-index: 9999;
+}
+
+.sidebar-nav,
+.sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.sidebar-nav button,
+.sidebar-bottom button {
+    display: flex;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    background: transparent;
+    border: none;
+    padding: 0.4rem 0;
+    margin: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 0.6rem;
+    color: white;
+    font-size: 0.7rem;
+}
+
+.sidebar-bottom a {
+    text-decoration: none;
+    color: white;
+}
+
+.sidebar-nav button:hover,
+.sidebar-bottom button:hover {
+    background-color: #454368;
+}
+
+.user-profile {
+    /* display: flex; */
+    text-align: center;
+    margin: 1rem 0.5rem;
+    color: white;
+    cursor: pointer;
+}
+.user-profile img {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 40%;
+    margin-right: 0.5rem;
+    text-align: center;
+}

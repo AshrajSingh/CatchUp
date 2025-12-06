@@ -1,0 +1,64 @@
+.no-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  font-size: x-large;
+  color: rgba(255, 255, 255, 0.47);
+  text-align: center;
+}
+
+.no-messages p {
+  margin: 0;
+}
+
+.message-bubble {
+  max-width: 60%;
+  margin: 8px 0;
+  padding: 0.2rem 1.7rem;
+  border-radius: 1rem;
+  position: relative;
+  word-wrap: break-word;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-bubble.sent {
+  background: #a200ff;
+  color: white;
+  align-self: flex-end;
+  margin-left: auto;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 1.7rem;
+    /* text-align: left; */
+
+}
+
+.message-bubble.received {
+  background: #232239;
+  color: #eee;
+  align-self: flex-start;
+  margin-right: auto;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 1.7rem;
+}
+
+.timestamp {
+  font-size: 11px;
+  opacity: 0.8;
+  text-align: right;
+}
+.message-content p{
+  margin: 0.6rem 0;
+}

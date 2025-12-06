@@ -1,0 +1,112 @@
+.room-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #141522;
+    color: white;
+    height: 100vh;
+}
+
+.room-sidebar h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.room-header h1 {
+    font-size: x-large;
+}
+
+.add-room {
+    background-color: #313050;
+    border-radius: 0.35rem;
+    padding: 0.2rem 1rem;
+    transition: background-color 0.3s;
+    color: #21a595;
+    box-shadow: 0 2px 3px rgb(0, 0, 0);
+    border: 2px solid rgba(33, 165, 149, 0.3);
+    font-size: 1.2rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    font-weight: 600;
+}
+
+.add-room:hover {
+    /* background-color: #4d49a1; */
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(33, 165, 149, 0.3);
+    border-color: #21a595;
+}
+
+.room-panel {
+    /* display: flex; */
+    align-items: center;
+    background: #363558;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgb(0, 0, 0);
+    padding: 1rem;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+    margin: 1rem 0;
+}
+
+.room-panel:hover {
+    box-shadow: 0px 5px 15px rgb(79, 77, 131);
+    background-color: #4d49a1;
+}
+
+.room-panel.active {
+    background-color: #4d49a1;
+    box-shadow: 0px 5px 15px rgb(79, 77, 131);
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+.room-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.room-name {
+    font-weight: 500;
+    font-size: large;
+}
+
+.badge {
+    background: #ff3b3b;
+    color: white;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+}
+
+.empty-state {
+    text-align: center;
+    color: #888;
+    margin: 2rem 0;
+}
+
+.create-room-btn {
+    margin-top: auto;
+    align-self: center;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
