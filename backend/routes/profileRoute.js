@@ -12,9 +12,10 @@ router.get('/profile', userAuthentication, async function (req, res) {
         const userId = req.user.user_id;
         const user = await User.findById(userId)
         const profileData = {
+            userId: user._id,
             username: user.username,
             bio: user.bio,
-            gender:user.gender,
+            gender: user.gender,
             contactId: user.contactId,
             profilePicUrl: user.profilePicUrl,
             createdAt: user.createdAt,
@@ -48,6 +49,23 @@ router.post('/profile/profilePic/update', userAuthentication, async (req, res) =
     catch (error) {
         console.error('Update profilePic error:', error);
         res.status(500).json({ message: 'Failed to update profilePic' });
+    }
+})
+
+//delete user route
+router.delete('/profile/delete/:userId', userAuthentication, async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        console.log('Deleting userId: ', userId)
+        const response = await User.findByIdAndDelete(userId);
+
+        if (!response) {
+            throw new Error('User deletion failed');
+        }
+
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Delete user error at route: ', error)
     }
 })
 

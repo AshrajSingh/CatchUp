@@ -59,10 +59,30 @@ router.post('/contact/add', userAuthentication, async function (req, res) {
             { upsert: true, new: true }
         ).populate('contacts', 'username bio contactId status unreadCount profilePicUrl createdAt');
 
+        await Contacts.findOneAndUpdate(
+            { userId: contactUser._id },
+            { $addToSet: { contacts: userId } },
+            { upsert: true, new: true }
+        ).populate('contacts', 'username bio contactId status unreadCount profilePicUrl createdAt');
+
         return res.json({ message: 'Contact added successfully', contacts: updated.contacts });
     } catch (error) {
         console.error('Add contact error:', error);
         return res.status(500).json({ message: 'Failed to add contact' });
+    }
+})
+
+router.delete('/contact/delete/:deleteUserId', userAuthentication, async (req, res) => {
+    try {
+        const userId = req.user.user_id;
+        const deleteUserId = req.params.deleteUserId;
+        console.log('Deleting contactId: ', deleteUserId)
+        const response = await Contacts.findOneAndUpdate({ userId }, { $pull: { contacts: deleteUserId } }, { new: true });
+        res.json(response)
+    }
+    catch (error) {
+        console.error('Delete contact error:', error);
+        res.status(500).json({ message: 'Failed to delete contact' });
     }
 })
 
