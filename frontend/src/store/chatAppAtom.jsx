@@ -1,3 +1,4 @@
+import { replace, useNavigate } from "react-router-dom"
 import { atom } from "recoil"
 const apiURL = 'http://localhost:5000'
 
@@ -30,10 +31,19 @@ export const roomsAtom = atom({
     default: [],
     effects: [
         ({ setSelf, onSet }) => {
-            const token = JSON.parse(localStorage.getItem("user")).token
-
-            if (!token) return
-
+            const users = localStorage.getItem("user")
+            let user = null, token = null;
+            try {
+                user = users ? JSON.parse(users) : null;
+                token = user?.token;
+            } catch (e) {
+                user = null;
+                token = null;
+            }
+            if (!user || !token) {
+                setSelf([]); // No user/token, just set empty and return
+                return;
+            }
             fetch(`${apiURL}/contacts`, {
                 method: "GET",
                 headers: {
@@ -42,7 +52,6 @@ export const roomsAtom = atom({
                 }
             }).then(res => res.json())
                 .then(data => {
-                    console.log("data: ", data)
                     const contactData = data.flatMap(contactDoc =>
                         contactDoc.contacts.map(contact => ({
                             id: contact._id,
@@ -55,11 +64,8 @@ export const roomsAtom = atom({
                             createdAt: contact.createdAt
                         }))
                     )
-
-                    console.log("contact data: ", contactData)
                     setSelf(contactData)
                     localStorage.setItem("Contacts", JSON.stringify(contactData))
-
                 }).catch((error) => {
                     console.error('failed to fetch contacts:', error)
                 })

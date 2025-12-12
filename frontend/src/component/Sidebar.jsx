@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import '../stylesheets/sidebar.css';
 import '../stylesheets/dashboardPage.css';
-import { addContact, getProfileData } from '../frontendServices/userAuth';
+import { addContact, deleteUser, getProfileData } from '../frontendServices/userAuth';
 import toast from 'react-hot-toast';
 import AddRoom from './AddRoom';
 import ChatInfo from './ChatInfo';
+import { useResetData } from '../hooks/resetDataHook';
+import { useRecoilState } from 'recoil';
+import { roomsAtom } from '../store/chatAppAtom';
+import { Navigate, replace, useNavigate } from 'react-router-dom';
+import { UserProfile } from './UserProfile';
 
 export default function Sidebar({ user, onProfilePicChange }) {
   const [showAddRoom, setShowAddRoom] = useState(false)
   const [showUserProfile, setShowUserProfile] = useState(false)
+  const [rooms, setRooms] = useRecoilState(roomsAtom)
+  const resetData = useResetData();
+  const navigate = useNavigate();
 
   function showAddRoomModal() {
     setShowAddRoom(true)
@@ -19,12 +27,19 @@ export default function Sidebar({ user, onProfilePicChange }) {
     console.log("contactId: ", contactId)
 
     try {
+      //check if user is trying to add already added contact
+      const isAlreadyAdded = rooms.some(room => room.contactId == contactId)
+
+      if (isAlreadyAdded) {
+        toast.error('Contact already added!')
+        setShowAddRoom(false)
+        return;
+      }
       const response = await addContact(contactId)
       console.log("Response: ", response)
 
-      // response.contacts is an array of contact objects from backend
       if (response && response.contacts && response.contacts.length > 0) {
-        // Add the newly added contact to rooms
+
         const newContact = response.contacts[response.contacts.length - 1];
         setRooms(prevRooms => [...prevRooms, newContact])
       }
@@ -43,8 +58,51 @@ export default function Sidebar({ user, onProfilePicChange }) {
   function closeAddRoom() {
     setShowAddRoom(false)
   }
-  function closeUserProfile(){
+  function closeUserProfile() {
     setShowUserProfile(false)
+  }
+
+  //delete account function
+  async function handleDeleteUser(userId, actionType) {
+    console.log("Delete user called with id: ", userId)
+
+    if (actionType === 'logoutUser') {
+      //calling function to logout user
+      handleLogout(userId);
+      return;
+    }
+
+    if (actionType === 'deleteUser') {
+
+      const response = await deleteUser({ userId })
+      console.log("Delete user response: ", response)
+
+      if (response) {
+        resetData();
+        setShowUserProfile(false);
+        navigate('/login', { replace: true });
+        
+        toast.success('Account deleted successfully!')
+        return;
+      } else {
+        toast.error('Connot delete account. Please try again later.')
+      }
+    }
+  }
+
+  //logout function
+  async function handleLogout(userId) {
+    console.log("Logout called for userId: ", userId)
+
+    if (window.confirm('Are you sure you want to logout?')) {
+
+      resetData();
+
+      toast.success('Logged out successfully!')
+      navigate('/login', { replace: true })
+      return;
+    }
+
   }
 
   return (
@@ -104,7 +162,7 @@ export default function Sidebar({ user, onProfilePicChange }) {
         showUserProfile && (
           <div className="addRoom-overlay">
             <div className="chatinfo-addRoom-content">
-              <ChatInfo user={user} onProfilePicChange={onProfilePicChange} onCloseProfile={closeUserProfile}/>
+              <UserProfile user={user} onProfilePicChange={onProfilePicChange} onCloseProfile={closeUserProfile} onDeleteUser={handleDeleteUser} />
             </div>
           </div>
         )

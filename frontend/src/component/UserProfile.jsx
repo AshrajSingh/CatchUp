@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
 import "../stylesheets/chatInfo.css";
 import { MALE_PROFILE_ICONS, FEMALE_PROFILE_ICONS } from "../frontendServices/profilePics";
+import maleDefaultProfileIcon from '../assets/male-profile-icons/male-user-default-pic.jpg'
 import { useRecoilState } from "recoil";
 import { roomsAtom } from "../store/chatAppAtom";
 
-
-
-export const ChatInfo = ({ user, onDeleteUser, onCloseProfile }) => {
+export const UserProfile = ({ user, onProfilePicChange, onDeleteUser, onCloseProfile }) => {
     const [selectedIcon, setSelectedIcon] = useState(null);
     const [showIcons, setShowIcons] = useState(false)
     console.log("MALE_PROFILE_ICONS: ", MALE_PROFILE_ICONS)
 
     console.log("user: ", user)
+if(!user){
+    return <div>Loading...</div>
+}
+    const handleIconSelect = (iconName) => {
+        setSelectedIcon(iconName.name);
+        onProfilePicChange?.(iconName.emoji);
+    };
 
     //delete account function
     const deleteAccount = () => {
         console.log('deleteAccount called at ChatInfo');
-        console.log('deleteuserId:', user.id);
         if (window.confirm(`Are you sure you want to delete your account? This action cannot be undone.`)) {
-            onDeleteUser?.(user.id);
+            onDeleteUser?.(user.userId, 'deleteUser');
         }
     };
 
@@ -56,10 +61,7 @@ export const ChatInfo = ({ user, onDeleteUser, onCloseProfile }) => {
                             {user.profilePicUrl ? (
                                 <img src={user.profilePicUrl} alt={user.username} />
                             ) : (
-                                <img
-                                    src={MALE_PROFILE_ICONS.find((icon) => icon.name === defaultMaleUser)?.emoji}
-                                    alt="default"
-                                />
+                                <img src={maleDefaultProfileIcon} alt="default" />
                             )}
                         </div>
                         <div className={getStatusClass(user.status)}></div>
@@ -89,6 +91,39 @@ export const ChatInfo = ({ user, onDeleteUser, onCloseProfile }) => {
                 <p className="bio-content">{user.bio ? user.bio : "No bio"}</p>
             </div>
 
+            {/* Profile Picture Selection */}
+            <div className="profile-card">
+                <h3 className="section-title">
+                    <span className="section-icon">👤</span>
+                    Change Profile Picture
+                    <span className="select-icon-button" onClick={() => setShowIcons(true)} >Change profile</span>
+                </h3>
+                <div className="icon-grid">
+
+                    {showIcons && user.gender === 'male' && MALE_PROFILE_ICONS.map((src, idx) => (
+                        <img
+                            key={idx}
+                            src={src.emoji}
+                            alt={`profile-pic-${idx + 1}`}
+                            onClick={() => handleIconSelect(src)}
+                            style={{ width: 60, height: 60, cursor: 'pointer', borderRadius: '50%' }}
+                            className={`icon-button ${selectedIcon === src.name ? "selected" : ""}`}
+                        />
+                    ))}
+
+                    {showIcons && user.gender === 'female' && FEMALE_PROFILE_ICONS.map((src, idx) => (
+                        <img
+                            key={idx}
+                            src={src.emoji}
+                            alt={`profile-pic-${idx + 1}`}
+                            onClick={() => handleIconSelect(src)}
+                            style={{ width: 60, height: 60, cursor: 'pointer', borderRadius: '50%' }}
+                            className={`icon-button ${selectedIcon === src.name ? "selected" : ""}`}
+                        />
+                    ))}
+                </div>
+            </div>
+
             {/* Delete User Section */}
             <div className="profile-card danger-zone">
                 <div className="danger-header">
@@ -100,12 +135,15 @@ export const ChatInfo = ({ user, onDeleteUser, onCloseProfile }) => {
                         </p>
                     </div>
                 </div>
-                <div style={{ display: 'block' }} className="danger-buttons">
+                <div className="danger-buttons">
 
-                    <button style={{ width: '100%' }}
-                        className="delete-button" onClick={deleteAccount}>
+                    <button className="delete-button" onClick={deleteAccount}>
                         <span className="button-icon">🗑️</span>
-                        Delete contact
+                        Delete account
+                    </button>
+                    <button className="delete-button" onClick={logoutUser}>
+                        <span className="button-icon">🗑️</span>
+                        Log out
                     </button>
                 </div>
             </div>
@@ -113,4 +151,4 @@ export const ChatInfo = ({ user, onDeleteUser, onCloseProfile }) => {
     );
 };
 
-export default ChatInfo;
+export default UserProfile;

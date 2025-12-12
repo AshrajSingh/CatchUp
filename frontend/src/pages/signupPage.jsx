@@ -32,12 +32,13 @@ export default function SignupPage() {
         const loadingId = toast.loading('Signing you up...')
         toast.dismiss(loadingId)
 
+        // basic validation
+        if (!username || !password || !gender || !bio) {
+            return toast.error("All fields are required!")
+        }
+
         const userData = setUserdetails({ username, bio, password, gender })
 
-        // basic validation
-        if (!userData.username || !userData.password) {
-            return toast.error("Username and password is required")
-        }
 
         try {
             //validate inputs
@@ -59,7 +60,7 @@ export default function SignupPage() {
             localStorage.setItem("user", JSON.stringify({
                 isLoggedIn: true,
                 username: username,
-                gender:response.gender,
+                gender: response.gender,
                 user_id: response.user_id,
                 contactId: contactId,
                 token: response.token

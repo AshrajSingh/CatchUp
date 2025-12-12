@@ -56,6 +56,37 @@ export async function logInUser({ username, password }) {
 }
 
 //------------------------------------------------------------------------------------------------------------
+//Delete user function
+export async function deleteUser({ userId }) {
+    console.log("Delete user called with id: ", userId)
+
+    const users = localStorage.getItem("user")
+    const user = JSON.parse(users)
+    const token = user.token
+
+    const response = await fetch(`${apiURL}/profile/delete/${userId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ userId })
+    })
+    try {
+        const data = await response.json()
+        if (!response.ok) {
+            throw new Error(data.message)
+        }
+        return data
+    }
+    catch (error) {
+        console.error('Delete user error: ', error)
+    }
+}
+
+
+
+//------------------------------------------------------------------------------------------------------------
 
 export async function addContact(contactId) {
     console.log("AddContact called: ", contactId)
@@ -87,6 +118,32 @@ export async function addContact(contactId) {
 
 //------------------------------------------------------------------------------------------------------------
 //remove contact function
+export async function removeContact(deleteUserId) {
+    console.log("RemoveContact called: ", deleteUserId)
+    const users = localStorage.getItem("user")
+    const user = JSON.parse(users)
+    const token = user.token
+
+    const response = await fetch(`${apiURL}/contact/delete/${deleteUserId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ deleteUserId })
+    })
+    try {
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.message)
+        }
+        return data
+    }
+    catch (error) {
+        console.error('Remove contact error:', error)
+        throw error; // Re-throw so caller can handle it or catch
+    }
+}
 
 //------------------------------------------------------------------------------------------------------------
 
@@ -130,12 +187,17 @@ export async function updateProfilePic(profilePicUrl) {
 }
 
 //------------------------------------------------------------------------------------------------------------
-//get all the data for the profile
 
+//get all the data for the profile
 export async function getProfileData() {
     const users = localStorage.getItem("user")
-    const user = JSON.parse(users)
-    const token = user.token
+    const user = users ? JSON.parse(users) : null;
+    const token = user?.token;
+
+    if (!user || !token) {
+        return null; // No user/token, just return null
+    }
+
     const response = await fetch(`${apiURL}/profile`, {
         method: "GET",
         headers: {

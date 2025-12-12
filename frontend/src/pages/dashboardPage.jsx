@@ -5,7 +5,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import AddRoom from "../component/AddRoom";
 import { useRecoilState } from "recoil";
 import { roomsAtom, userProfileAtom } from "../store/chatAppAtom";
-import { addContact, getProfileData, updateProfilePic } from "../frontendServices/userAuth";
+import { addContact, getProfileData, removeContact, updateProfilePic } from "../frontendServices/userAuth";
 import toast from "react-hot-toast";
 import RoomSidebar from "../component/roomSidebar";
 import messageIcon from '../assets/message-icon.png'
@@ -19,7 +19,6 @@ export default function DashboardPage() {
     const [selectedRoom, setSelectedRoom] = useState(null)
     const [profile, setProfile] = useRecoilState(userProfileAtom)
     const [rooms, setRooms] = useRecoilState(roomsAtom)
-    const user = JSON.parse(localStorage.getItem("user"))
 
     useEffect(() => {
         async function fetchProfileData() {
@@ -47,10 +46,19 @@ export default function DashboardPage() {
         console.log("contactId: ", contactId)
 
         try {
+            //check if user is trying to add already added contact
+            const isAlreadyAdded = rooms.some(room => room.contactId == contactId)
+
+            if (isAlreadyAdded) {
+                toast.error('Contact already added!')
+                setShowAddRoom(false)
+                return;
+            }
+
+            //add contact if the contact is not already added
             const response = await addContact(contactId)
             console.log("Response: ", response)
 
-            // response.contacts is an array of contact objects from backend
             if (response && response.contacts && response.contacts.length > 0) {
                 // Add the newly added contact to rooms
                 const newContact = response.contacts[response.contacts.length - 1];
@@ -68,6 +76,7 @@ export default function DashboardPage() {
             setShowAddRoom(false)
         }
     }
+
     function closeAddRoom() {
         setShowAddRoom(false)
     }
@@ -100,6 +109,25 @@ export default function DashboardPage() {
     function closeChatBox() {
         setSelectedRoom(null)
         setShowRightPanel(false)
+    }
+
+    //delete account function
+    async function handleDeleteUser(deleteUserId) {
+        console.log("Delete user called with id: ", deleteUserId)
+
+        const response = await removeContact(deleteUserId)
+        console.log("Delete user response: ", response)
+
+        if (response) {
+            setRooms(prevRooms => prevRooms.filter(room => room.id !== deleteUserId));
+            setSelectedRoom(null)
+            setShowRightPanel(false)
+            
+            toast.success('Contact deleted successfully!')
+            return
+        } else {
+            toast.error('Connot delete contact. Please try again later.')
+        }
     }
 
     return (
@@ -147,7 +175,7 @@ export default function DashboardPage() {
                 {showRightPanel && (
                     <>
                         <Panel id="roomInfo" order={4} minSize={23} >
-                            <ChatInfo user={selectedRoom} onCloseProfile={closeUserProfile} />
+                            <ChatInfo user={selectedRoom} onCloseProfile={closeUserProfile} onDeleteUser={handleDeleteUser} />
                         </Panel>
                         <PanelResizeHandle />
                     </>

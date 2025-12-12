@@ -15,6 +15,21 @@ export default function ChatBox({ selectedRoom, onProfileClick, onCloseChatBox }
     const [text, setText] = useState('')
     const socketRef = useRef(null);
     const roomIdRef = useRef(null);
+    const textareaRef = useRef(null);
+    const messagesRef = useRef(null)
+
+    const scrollToBottom = () => {
+        if (messagesRef.current) {
+            messagesRef.current.scrollTo({
+                top: messagesRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages])
 
     // Initialize socket connection (once)
     useEffect(() => {
@@ -114,6 +129,7 @@ export default function ChatBox({ selectedRoom, onProfileClick, onCloseChatBox }
 
     function handleMessage(e) {
         setText(e.target.value)
+        handleTextareaResize()
     }
 
     async function handleAddMessage() {
@@ -129,6 +145,11 @@ export default function ChatBox({ selectedRoom, onProfileClick, onCloseChatBox }
         console.log("Sending message: ", newMsg)
         setText('')
 
+        // Reset textarea height
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+        }
+
         try {
             // Send to backend (backend will save, emit to room, and socket will push back to all clients)
             const messageData = await addMessages(newMsg)
@@ -139,7 +160,7 @@ export default function ChatBox({ selectedRoom, onProfileClick, onCloseChatBox }
             console.error("Failed to send message:", error)
         }
     }
-    
+
     useEffect(() => {
         const handleEscKey = (event) => {
             if (event.key === 'Escape') {
@@ -155,6 +176,14 @@ export default function ChatBox({ selectedRoom, onProfileClick, onCloseChatBox }
             document.removeEventListener('keydown', handleEscKey);
         };
     }, [onCloseChatBox]);
+    // Auto-resize textarea
+    const handleTextareaResize = () => {
+        const textarea = textareaRef.current;
+        if (textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+    };
 
     return (
         <div className='chatbox-container'>
@@ -167,19 +196,26 @@ export default function ChatBox({ selectedRoom, onProfileClick, onCloseChatBox }
             </div>
 
             {/* Messages Container - will scroll */}
-            <div className='messages-container'>
+            <div className='messages-container' ref={messagesRef}>
                 <Messages selectedRoom={selectedRoom} />
             </div>
 
             {/* Input stays at bottom */}
             <div className='chat-input'>
-                <input
+                <textarea
+                    ref={textareaRef}
                     type="text"
                     placeholder='Type your message here...'
                     autoFocus
                     value={text}
                     onChange={handleMessage}
-                    onKeyDown={(e) => e.key === 'Enter' && handleAddMessage()}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            handleAddMessage();
+                        }
+                    }}
+                    rows={1}
                 />
                 <button onClick={handleAddMessage}>
                     <img src={sendIcon} alt="send" />

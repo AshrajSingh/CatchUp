@@ -28,6 +28,7 @@ function App() {
     }
 
   }, [setAuth])
+  
   return (
     <>
       <BrowserRouter>

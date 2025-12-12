@@ -24,15 +24,16 @@ export default function Messages({ selectedRoom }) {
                 return (
                     <div
                         key={message._id || idx}
-                        className={`message-bubble ${isSent ? 'sent' : 'received'}`}
-                    >
-                        
+                        className={`message-bubble ${isSent ? 'sent' : 'received'}`}>
                         <div className='message-content'>
                             <p>{message.message}</p>
                             <div className="timestamp">
-
                                 <span className='timestamp'>
                                     {new Date(message.timeStamp).toLocaleDateString([], {
+                                        year: '2-digit',
+                                        month: '2-digit',
+                                        day: '2-digit'
+                                    })}, {new Date(message.timeStamp).toLocaleTimeString([], {
                                         hour: '2-digit',
                                         minute: '2-digit'
                                     })}
